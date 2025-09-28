@@ -1,5 +1,6 @@
 import { useReducer } from "react";
 import "./App.css";
+import { Form } from "./components/form";
 
 type State = {
 	count: number;
@@ -22,7 +23,7 @@ function App() {
 	const [state, dispatch] = useReducer(reducer, initialState);
 
 	return (
-		<form>
+		<div>
 			<h1>Learn useReducer</h1>
 			<h2>Counter: {state.count}</h2>
 			<button
@@ -39,7 +40,9 @@ function App() {
 				}}>
 				Decrement
 			</button>
-		</form>
+			<hr />
+			<Form />
+		</div>
 	);
 }
 
