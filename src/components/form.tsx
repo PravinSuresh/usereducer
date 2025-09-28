@@ -2,7 +2,11 @@ import { useReducer } from "react";
 
 type State = {
 	name: string;
-	submittedName: string;
+	phone: string;
+	submittedDetails: {
+		name: string;
+		phone: string;
+	};
 };
 
 type Action =
@@ -10,6 +14,7 @@ type Action =
 			type: "SET_NAME";
 			payload: string;
 	  }
+	| { type: "SET_PHONE"; payload: string }
 	| { type: "SUBMIT" }
 	| { type: "RESET" };
 
@@ -18,10 +23,24 @@ export const Form = () => {
 		switch (action.type) {
 			case "SET_NAME":
 				return { ...state, name: action.payload };
+			case "SET_PHONE":
+				return { ...state, phone: action.payload };
 			case "SUBMIT":
-				return { ...state, submittedName: state.name, name: "" };
+				return {
+					...state,
+					submittedDetails: {
+						name: state.name,
+						phone: state.phone,
+					},
+					name: "",
+					phone: "",
+				};
 			case "RESET":
-				return { name: "", submittedName: "" };
+				return {
+					name: "",
+					phone: "",
+					submittedDetails: { name: "", phone: "" },
+				};
 			default:
 				return state;
 		}
@@ -29,7 +48,11 @@ export const Form = () => {
 
 	const initialState = {
 		name: "",
-		submittedName: "",
+		phone: "",
+		submittedDetails: {
+			name: "",
+			phone: "",
+		},
 	};
 
 	const [state, dispatcher] = useReducer(reducer, initialState);
@@ -51,8 +74,23 @@ export const Form = () => {
 					dispatcher({ type: "SET_NAME", payload: e.target.value });
 				}}
 			/>
+			<label
+				style={{ display: "block" }}
+				htmlFor='phone'>
+				Phone
+			</label>
+			<input
+				id='phone'
+				type='text'
+				value={state.phone}
+				onChange={(e) => {
+					dispatcher({ type: "SET_PHONE", payload: e.target.value });
+				}}
+			/>
 			<button type='submit'>Submit</button>
-			<p>User:{state.submittedName}</p>
+			<p>
+				User:{state.submittedDetails.name} Ph: {state.submittedDetails.phone}
+			</p>
 		</form>
 	);
 };
